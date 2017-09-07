@@ -20,7 +20,7 @@ class CreateMaPostsTable extends Migration {
 			$table->softDeletes();
 			$table->string('user_id', 36)->index('fk_ma_posts_ma_users1_idx');
 			$table->string('title')->nullable();
-			$table->text('text');
+			$table->text('text', 5000);
 		});
 	}
 
