@@ -19,3 +19,4 @@ use Illuminate\Http\Request;
 //});
 
 Route::resource('/users','MAUsersController');
+Route::resource('/posts','MAPostsController');
