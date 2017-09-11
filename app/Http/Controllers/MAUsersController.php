@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\MAUsers;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
+
 
 class MAUsersController extends Controller
 {
@@ -14,9 +17,11 @@ class MAUsersController extends Controller
      */
     public function index()
     {
+        $user = JWTAuth::parseToken()->toUser();
         $users = MAUsers::all();
         $response = [
-            'users' => $users
+            'users' => $users,
+            'user' => $user
         ];
 
         return response()->json($response, 200);
@@ -35,7 +40,7 @@ class MAUsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,7 +51,7 @@ class MAUsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -57,7 +62,7 @@ class MAUsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -68,8 +73,8 @@ class MAUsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -80,11 +85,29 @@ class MAUsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+    }
+
+    public function signin(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+        $credentials = $request->only('email', 'password');
+//        dd($credentials);
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Invalid Credentials!'], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create toke!'], 500);
+        }
+        return response()->json(['token' => $token], 200);
     }
 }
