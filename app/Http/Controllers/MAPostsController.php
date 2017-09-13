@@ -72,7 +72,14 @@ class MAPostsController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+        $post = MAPosts::find($id);
+
+        if ($post->save()) {
+            return response()->json(['user' => $post], 200);
+        } else {
+            return response()->json(['error' => 'User not found!'], 400);
+
+        }
 	}
 
 	/**
@@ -94,9 +101,19 @@ class MAPostsController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
-		//
+        $post =  MAPosts::find($id);
+        $post->title = $request->title;
+        $post->text = $request->text;
+
+
+        if ($post->save()) {
+            return response()->json(['post' => $post], 201);
+        } else {
+            return response()->json(['error' => 'Not saved'], 400);
+
+        }
 	}
 
 	/**
