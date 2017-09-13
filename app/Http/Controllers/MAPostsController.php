@@ -108,7 +108,9 @@ class MAPostsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+        $post = MAPosts::where('id', $id)->delete();
+
+        return response()->json(['succses' => $post], 200);
 	}
 
 }
