@@ -8,7 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class MAUsers extends Authenticatable
 {
     use Notifiable;
+
     use SoftDeletes;
+
     public $incrementing = false;
 
 
