@@ -75,7 +75,7 @@ class MAPostsController extends Controller {
         $post = MAPosts::find($id);
 
         if ($post->save()) {
-            return response()->json(['user' => $post], 200);
+            return response()->json(['post' => $post], 200);
         } else {
             return response()->json(['error' => 'User not found!'], 400);
 
