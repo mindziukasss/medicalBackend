@@ -21,5 +21,13 @@ class MAUsers extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected  $with = ['roles'];
+
+    public function roles() {
+        return $this->belongsToMany(MARoles::class, 'ma_users_roles_connections', 'user_id', 'role_id' );
+    }
+    public function role(){
+        return $this->hasOne(MAUsersRolesConnections::class, 'user_id', 'id');
+    }
 
 }
