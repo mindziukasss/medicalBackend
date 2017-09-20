@@ -17,6 +17,25 @@ class MAPostsController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+	public function allPosts()
+    {
+        $posts = MAPosts::all();
+        return response()->json(['posts' => $posts], 200);
+    }
+
+    public function showPost($id)
+    {
+        $post = MAPosts::find($id);
+
+        if ($post->save()) {
+            return response()->json(['post' => $post], 200);
+        } else {
+            return response()->json(['error' => 'User not found!'], 400);
+
+        }
+    }
+
 	public function index()
 	{
         $posts = MAPosts::all();
