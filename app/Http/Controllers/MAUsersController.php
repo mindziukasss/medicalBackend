@@ -185,4 +185,13 @@ class MAUsersController extends Controller
         }
         return response()->json(['token' => $token], 200);
     }
+
+    public function isLoggedIn(){
+        $user = JWTAuth::parseToken()->toUser();
+        if($user){
+            return response()->json(['user' => $user],200);
+        }else{
+            return response()->json(['error' => 'Authenticate failed'],400);
+        }
+    }
 }
